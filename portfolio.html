@@ -1,0 +1,1843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>毛宇欣 | PORTFOLIO v1.0</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--pink:#FF74C2;--black:#000;--bg:#F0F0F0;--dark-bg:#1a1a1a;--border:4px;--bw:var(--border)}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Arial Black','Impact','SimHei','Noto Sans SC',sans-serif;
+  background:var(--bg);color:var(--black);
+  overflow-x:hidden;cursor:crosshair;
+}
+
+/* ===== NOISE OVERLAY ===== */
+.noise{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:9999;opacity:0.05;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:128px;
+  animation:noiseShift 0.08s steps(4) infinite;
+}
+@keyframes noiseShift{0%{transform:translate(0)}25%{transform:translate(-1px,1px)}50%{transform:translate(1px,-1px)}75%{transform:translate(-1px,0)}100%{transform:translate(0,1px)}}
+
+/* ===== PIXEL JITTER ===== */
+.pj{animation:jitter .12s steps(2) infinite alternate}
+@keyframes jitter{0%{transform:translate(0)}100%{transform:translate(1px,-1px)}}
+
+/* ===== GLITCH TEXT ===== */
+.glitch{position:relative;display:inline-block}
+.glitch::before,.glitch::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%}
+.glitch::before{color:var(--pink);animation:gT 2.5s steps(6) infinite;clip-path:polygon(0 0,100% 0,100% 35%,0 35%)}
+.glitch::after{color:#00ff88;animation:gB 3s steps(8) infinite;clip-path:polygon(0 65%,100% 65%,100% 100%,0 100%)}
+@keyframes gT{0%,100%{transform:translate(0)}20%{transform:translate(-3px,1px)}40%{transform:translate(2px,-1px)}60%{transform:translate(-1px,2px)}80%{transform:translate(3px,0)}}
+@keyframes gB{0%,100%{transform:translate(0)}15%{transform:translate(2px,1px)}35%{transform:translate(-3px,-1px)}55%{transform:translate(1px,2px)}75%{transform:translate(-2px,0)}95%{transform:translate(3px,-1px)}}
+
+/* ===== NAV ===== */
+.nav-bar{
+  position:fixed;top:0;left:0;width:100%;z-index:1000;
+  background:var(--black);border-bottom:var(--bw) solid var(--pink);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:48px;
+}
+.nav-logo{color:var(--pink);font-weight:900;font-size:14px;letter-spacing:2px}
+.nav-links{display:flex;gap:0}
+.nav-links a{
+  color:#fff;font-weight:800;font-size:11px;letter-spacing:1px;
+  text-decoration:none;padding:12px 16px;
+  border-left:var(--bw) solid #333;transition:background .15s,color .15s;
+}
+.nav-links a:hover,.nav-links a.active{background:var(--pink);color:var(--black)}
+.nav-links a .nav-num{color:var(--pink);margin-right:4px}
+.nav-links a:hover .nav-num,.nav-links a.active .nav-num{color:var(--black)}
+
+/* ===== SECTION COMMON ===== */
+section{position:relative;overflow:hidden}
+.section-title-bar{
+  background:var(--black);color:var(--pink);
+  padding:16px 32px;font-weight:900;font-size:clamp(14px,2vw,18px);
+  letter-spacing:3px;border-bottom:var(--bw) solid var(--pink);
+  display:flex;align-items:center;gap:12px;
+}
+.section-title-bar .num{
+  background:var(--pink);color:var(--black);
+  padding:4px 10px;font-size:12px;letter-spacing:1px;
+}
+.section-title-bar .en{color:#888;font-size:12px;letter-spacing:2px}
+
+/* ===== DECORATIONS ===== */
+.geo{position:absolute;border:var(--bw) solid var(--black);animation:geoJ .18s steps(3) infinite alternate}
+@keyframes geoJ{0%{transform:translate(0) rotate(0)}100%{transform:translate(1px,-1px) rotate(2deg)}}
+.tri{position:absolute;width:0;height:0;border-left:12px solid transparent;border-right:12px solid transparent;border-bottom:20px solid var(--pink);animation:triJ .2s steps(3) infinite alternate}
+@keyframes triJ{0%{transform:translate(0) rotate(0)}100%{transform:translate(2px,-1px) rotate(3deg)}}
+.wire{position:absolute;height:2px;background:var(--black)}
+.chip{position:absolute;border:2px solid var(--black);background:var(--dark-bg)}
+.chip::after{content:'';position:absolute;top:3px;left:3px;right:3px;bottom:3px;border:1px solid #444}
+
+/* ===== WIN98 WINDOW ===== */
+.win98{background:var(--black);border:var(--bw) solid #333;box-shadow:6px 6px 0 rgba(0,0,0,.5)}
+.win98-bar{background:#555;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;border-bottom:3px solid #333}
+.win98-bar .t{color:#fff;font-weight:900;font-size:11px;letter-spacing:1px;font-family:'Courier New',monospace}
+.win98-dots{display:flex;gap:5px}
+.wd{width:12px;height:12px;border:2px solid #fff;border-radius:50%}
+.wd-r{background:#ff4466}.wd-y{background:#ffcc00}.wd-g{background:#00ff88}
+.win98-body{padding:16px}
+
+/* ===== PROGRESS BAR ===== */
+.prog-wrap{border:3px solid #fff;padding:3px;margin:8px 0}
+.prog-bar{height:16px;background:#555;overflow:hidden}
+.prog-fill{height:100%;background:var(--pink);width:0%;animation:pFill 2.5s steps(50) forwards}
+@keyframes pFill{0%{width:0}100%{width:var(--fill,100%)}}
+.prog-fill::after{content:'';position:absolute;right:0;top:0;width:6px;height:100%;background:#fff;animation:scan .15s steps(2) infinite alternate}
+@keyframes scan{0%{opacity:1}100%{opacity:.4}}
+.prog-100{border:3px solid #fff;padding:8px;background:var(--pink);text-align:center;font-weight:900;font-size:14px;color:var(--black);letter-spacing:1px;animation:pG 1.5s steps(4) infinite}
+@keyframes pG{0%,100%{transform:translate(0)}25%{transform:translate(-1px,1px)}50%{transform:translate(2px,0)}75%{transform:translate(-1px,-1px)}}
+
+/* ===== CODE BLOCK ===== */
+.code-block{
+  background:var(--black);border:var(--bw) solid #333;padding:12px 16px;
+  font-family:'Courier New',monospace;font-size:11px;color:var(--pink);
+  line-height:1.6;overflow:hidden;
+}
+.code-block .prompt{color:#888}
+.code-block .str{color:#00ff88}
+.code-block .kw{color:#ffcc00}
+
+/* ===== BUTTON ===== */
+.btn{
+  padding:14px 32px;font-family:inherit;font-weight:900;font-size:14px;
+  border:var(--bw) solid var(--black);cursor:pointer;text-decoration:none;
+  display:inline-block;letter-spacing:1px;transition:transform .1s;position:relative;
+}
+.btn:hover{transform:translate(-4px,-4px);box-shadow:6px 6px 0 var(--black)}
+.btn-pk{background:var(--pink);color:var(--black)}
+.btn-bk{background:var(--black);color:var(--pink)}
+.btn::after{content:'';position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--pink);border:2px solid var(--black)}
+
+/* ===== CARD ===== */
+.card{border:var(--bw) solid var(--black);background:#fff;overflow:hidden;transition:transform .15s}
+.card:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--black)}
+.card-thumb{border-bottom:var(--bw) solid var(--black);display:flex;align-items:center;justify-content:center;font-weight:900;position:relative;overflow:hidden}
+.card-info{padding:16px}
+.card-info h3{font-size:16px;font-weight:800;margin-bottom:6px}
+.card-info p{font-size:12px;font-weight:500;color:#666;line-height:1.5}
+.tag-sm{display:inline-block;background:var(--pink);border:2px solid var(--black);padding:3px 10px;font-size:10px;font-weight:700;margin-top:8px}
+
+/* ===== RESUME ANNOTATION ===== */
+.annotate{font-family:'Courier New',monospace;font-size:11px;color:#888;font-style:italic}
+.annotate-hand{font-family:cursive;font-size:11px;color:var(--pink);font-style:italic}
+
+/* ================================================================
+   SECTION 0 - COVER
+   ================================================================ */
+#cover{min-height:100vh;display:flex;flex-direction:column}
+.cover-top{
+  background:var(--black);color:#fff;padding:12px 32px;
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:var(--bw) solid var(--pink);
+  font-weight:900;font-size:13px;letter-spacing:3px;
+}
+.cover-top .dot{width:8px;height:8px;background:var(--pink);display:inline-block;margin:0 10px}
+
+.cover-hero{
+  background:#fff;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:56px 32px 44px;text-align:center;
+  border-bottom:var(--bw) solid var(--black);
+  position:relative;min-height:50vh;
+}
+.cover-hero .name{
+  font-size:clamp(72px,11vw,140px);font-weight:900;line-height:1.05;letter-spacing:-4px;display:block;
+}
+.cover-hero .name .gc{display:inline-block;animation:cJ .15s steps(2) infinite alternate}
+@keyframes cJ{0%{transform:translate(0)}100%{transform:translate(1px,-.5px)}}
+.cover-hero .dsgn{
+  font-size:clamp(48px,8vw,96px);font-weight:900;line-height:1;letter-spacing:2px;
+  color:var(--pink);-webkit-text-stroke:var(--bw) solid var(--black);paint-order:stroke fill;
+  display:block;margin-top:-4px;animation:gPk 2s steps(5) infinite;
+}
+@keyframes gPk{0%,100%{transform:translate(0)}30%{transform:translate(-2px,1px)}60%{transform:translate(2px,0)}80%{transform:translate(-1px,-1px)}}
+
+.cover-info{
+  margin-top:24px;font-size:clamp(13px,1.5vw,16px);font-weight:700;letter-spacing:1px;
+  border-top:var(--bw) solid var(--black);border-bottom:var(--bw) solid var(--black);
+  padding:8px 20px;display:inline-block;
+}
+.cover-info .sq{display:inline-block;width:8px;height:8px;background:var(--pink);margin:0 8px;vertical-align:middle;border:2px solid var(--black)}
+.cover-dirs{margin-top:14px;font-size:clamp(10px,1.2vw,13px);font-weight:600;letter-spacing:2px;color:#444}
+.cover-dirs .ds{display:inline-block;width:5px;height:5px;background:var(--black);vertical-align:middle;margin:0 4px}
+
+.cover-cta{margin-top:28px;display:flex;gap:14px;justify-content:center}
+
+.cover-lower{
+  background:var(--pink);display:flex;align-items:center;justify-content:center;
+  flex:1;padding:40px 32px;position:relative;min-height:44vh;
+  border-top:var(--bw) solid var(--black);
+}
+
+/* ================================================================
+   SECTION 1 - PROFILE
+   ================================================================ */
+#profile{background:#fff}
+.profile-grid{
+  display:flex;flex-direction:column;align-items:center;
+  max-width:900px;margin:0 auto;padding:60px 40px;
+}
+.profile-left{
+  width:100%;max-width:720px;position:relative;text-align:center;margin-bottom:48px;
+}
+.profile-right{width:100%;max-width:600px;text-align:center;padding-top:24px;border-top:var(--bw) solid var(--black)}
+
+.profile-subtitle{
+  background:var(--black);color:var(--pink);padding:12px 24px;
+  font-weight:900;font-size:18px;letter-spacing:3px;margin:0 auto 32px;display:inline-block;
+}
+
+.edu-item{margin-bottom:28px;text-align:center}
+.edu-item .school{font-weight:900;font-size:26px;margin-bottom:6px}
+.edu-item .major{font-weight:700;font-size:18px;color:var(--pink)}
+.edu-item .time{font-weight:600;font-size:16px;color:#888;font-family:'Courier New',monospace}
+.edu-item .courses{font-weight:600;font-size:15px;color:#555;margin-top:8px;line-height:1.8}
+
+.avatar-win98{
+  width:120px;height:120px;border:var(--bw) solid var(--black);
+  background:#ddd;margin:0 auto 28px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:13px;color:#888;
+}
+
+.skill-item{margin-bottom:22px}
+.skill-label{font-weight:800;font-size:16px;margin-bottom:8px;display:flex;justify-content:space-between}
+.skill-label .pct{color:var(--pink);font-family:'Courier New',monospace}
+.skill-bar-wrap{border:3px solid var(--black);padding:3px;background:#fff}
+.skill-bar{height:18px;background:#ddd;overflow:hidden}
+.skill-bar-fill{height:100%;background:var(--pink);animation:sbFill 2s steps(40) forwards}
+@keyframes sbFill{from{width:0}to{width:var(--w)}}
+
+.practice-block{
+  border:var(--bw) solid var(--black);padding:28px;margin-top:36px;background:var(--dark-bg);color:#fff;
+}
+.practice-block h4{color:var(--pink);font-weight:900;font-size:17px;letter-spacing:2px;margin-bottom:14px}
+.practice-item{font-size:15px;color:#ccc;line-height:1.8;padding-left:16px;border-left:3px solid var(--pink);margin-bottom:10px}
+
+.contact-block{
+  border:var(--bw) solid var(--black);padding:28px;margin-top:36px;background:var(--pink);color:var(--black);
+}
+.contact-block h4{font-weight:900;font-size:17px;letter-spacing:2px;margin-bottom:14px;color:var(--black)}
+.contact-item{font-size:16px;font-weight:800;line-height:2;color:var(--black)}
+
+/* ================================================================
+   SECTION 2 - INTERACTIVE DESIGN
+   ================================================================ */
+#interactive{background:var(--bg)}
+.inter-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+}
+.inter-left{padding:40px 36px;border-right:var(--bw) solid var(--black)}
+.inter-right{padding:40px 36px}
+
+.work-window{margin-bottom:24px}
+.work-window .win98-body{padding:0}
+.work-screenshot{
+  min-height:180px;background:linear-gradient(135deg,#1a1a1a,#2a2a2a);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.work-screenshot.has-img{min-height:0;background:#f0f0f0}
+.work-screenshot.has-img img{
+  width:100%;height:auto;display:block;object-fit:contain;
+}
+.work-screenshot .edit-hint{
+  position:absolute;top:6px;right:6px;background:var(--pink);color:var(--black);
+  border:2px solid var(--black);padding:3px 8px;font-weight:900;font-size:9px;
+  cursor:pointer;z-index:10;opacity:0;transition:opacity .2s;
+}
+.work-screenshot:hover .edit-hint{opacity:1}
+.work-screenshot .img-nav-btns{
+  position:absolute;bottom:8px;right:8px;display:flex;gap:4px;z-index:10;opacity:0;transition:opacity .2s;
+}
+.work-screenshot:hover .img-nav-btns{opacity:1}
+.work-screenshot .img-nav-btn{
+  background:var(--black);color:var(--pink);border:2px solid var(--pink);
+  width:26px;height:26px;cursor:pointer;font-weight:900;font-size:12px;
+  display:flex;align-items:center;justify-content:center;
+}
+.work-screenshot .img-nav-btn:hover{background:var(--pink);color:var(--black)}
+.work-screenshot .img-count-tag{
+  position:absolute;top:6px;left:6px;background:var(--black);color:var(--pink);
+  border:2px solid var(--pink);padding:3px 8px;font-weight:900;font-size:9px;z-index:10;
+}
+.work-screenshot .ui-el{
+  position:absolute;border:2px solid var(--pink);background:rgba(255,116,194,0.15);
+}
+.work-screenshot .ui-btn{
+  background:var(--pink);border:2px solid var(--black);padding:4px 12px;
+  font-weight:900;font-size:10px;color:var(--black);
+}
+.work-screenshot .glitch-strip{
+  position:absolute;height:2px;background:var(--pink);opacity:0.7;
+  animation:glitchStrip 0.3s steps(3) infinite alternate;
+}
+@keyframes glitchStrip{0%{transform:translateX(0)}100%{transform:translateX(4px)}}
+
+.work-desc{
+  padding:12px;border-top:3px solid #333;
+}
+.work-desc h4{font-weight:900;font-size:13px;color:var(--pink);margin-bottom:4px}
+.work-desc p{font-size:10px;color:#aaa;line-height:1.5}
+.work-desc .meta{font-size:9px;color:#666;font-family:'Courier New',monospace;margin-top:4px}
+
+/* Builtin hero image (横版图片, title上方) */
+.builtin-hero-img{
+  display:block;width:100%;
+  position:relative;overflow:hidden;cursor:pointer;
+  border-bottom:3px solid #333;
+  background:transparent;
+}
+.builtin-hero-img img{
+  display:block;width:100%;height:auto;
+  object-fit:contain;
+}
+.builtin-hero-img.is-empty{
+  height:120px;
+  background:linear-gradient(135deg,#f0f0f0 25%,#e8e8e8 25%,#e8e8e8 50%,#f0f0f0 50%,#f0f0f0 75%,#e8e8e8 75%);
+  background-size:20px 20px;
+}
+.builtin-hero-img.is-empty::after{
+  content:'+ 点击添加横版图片';
+  position:absolute;inset:0;display:grid;place-items:center;
+  font-weight:900;font-size:11px;color:#999;
+}
+.builtin-hero-img .edit-tip{
+  position:absolute;top:6px;right:8px;font-size:11px;font-weight:900;
+  color:rgba(255,255,255,.9);background:rgba(0,0,0,.5);padding:2px 6px;border-radius:4px;
+  opacity:0;transition:opacity .2s;pointer-events:none;
+}
+.builtin-hero-img:hover .edit-tip{opacity:1}
+.builtin-hero-img .del-tip{
+  position:absolute;top:6px;left:8px;font-size:12px;font-weight:900;
+  color:rgba(255,255,255,.9);background:rgba(255,0,0,.7);padding:2px 6px;border-radius:4px;
+  opacity:0;transition:opacity .2s;cursor:pointer;z-index:3;line-height:1;
+}
+.builtin-hero-img:hover .del-tip{opacity:1}
+.builtin-hero-img .del-tip:hover{background:rgba(255,0,0,.9)}
+
+.sensor-draw{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;border:2px dashed #555;margin-top:16px;
+}
+.sensor-draw svg{width:40px;height:40px}
+.sensor-draw span{font-size:10px;color:#888;font-family:'Courier New',monospace}
+
+/* ===== DYNAMIC SECTION WORKS (in-section) ===== */
+.section-dynamic-area{
+  border-top:var(--bw) solid var(--black);
+  padding:32px 36px;position:relative;
+  background:linear-gradient(135deg,#fff 0%,#f8f0f5 100%);
+}
+.section-dynamic-area::before{
+  content:'';position:absolute;top:0;left:0;width:6px;height:100%;
+  background:var(--pink);
+}
+.section-dynamic-label{
+  background:var(--pink);color:var(--black);padding:8px 18px;
+  font-weight:900;font-size:13px;letter-spacing:2px;display:inline-block;
+  margin-bottom:20px;border:var(--bw) solid var(--black);
+  box-shadow:3px 3px 0 var(--black);
+}
+.section-work-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:24px;
+}
+
+/* ===== WORK CARD (shared for dynamic + section) ===== */
+.work-card{
+  border:var(--bw) solid var(--black);background:#fff;overflow:hidden;
+  transition:transform .15s,box-shadow .15s;
+}
+.work-card:hover{transform:translate(-4px,-4px);box-shadow:8px 8px 0 var(--black)}
+
+.work-card-main-img{
+  width:100%;aspect-ratio:16/10;border-bottom:var(--bw) solid var(--black);
+  background:#f0f0f0;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;position:relative;cursor:pointer;min-height:180px;
+}
+.work-card-main-img img{width:100%;height:100%;object-fit:contain;display:block}
+.work-card-main-img .no-img{
+  font-weight:900;font-size:20px;color:var(--black);text-align:center;padding:20px;
+  line-height:1.5;
+}
+.work-card-main-img .glitch-overlay{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.02) 3px,rgba(0,0,0,0.02) 6px);
+  pointer-events:none;
+}
+.work-card-main-img .img-counter{
+  position:absolute;top:8px;right:8px;background:var(--black);color:var(--pink);
+  padding:3px 8px;font-weight:900;font-size:10px;font-family:'Courier New',monospace;
+  border:2px solid var(--pink);z-index:2;
+}
+.work-card-main-img .img-nav{
+  position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;
+  background:var(--pink);color:var(--black);border:var(--bw) solid var(--black);
+  font-weight:900;font-size:14px;cursor:pointer;z-index:2;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .2s;
+}
+.work-card-main-img:hover .img-nav{opacity:1}
+.work-card-main-img .img-nav-prev{left:8px}
+.work-card-main-img .img-nav-next{right:8px}
+
+.work-card-thumb-strip{
+  display:flex;gap:6px;padding:6px;border-top:var(--bw) solid var(--black);
+  background:#e0e0e0;overflow-x:auto;
+}
+.work-card-thumb-strip .thumb{
+  width:64px;height:64px;border:3px solid #555;background:#222;
+  cursor:pointer;overflow:hidden;flex-shrink:0;
+  transition:border-color .15s;
+}
+.work-card-thumb-strip .thumb.active{border-color:var(--pink)}
+.work-card-thumb-strip .thumb img{width:100%;height:100%;object-fit:cover}
+.work-card-thumb-strip .thumb-empty{
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;color:#888;font-weight:900;
+}
+
+.work-card-body{padding:18px 18px}
+.work-card-body h3{font-weight:900;font-size:17px;margin-bottom:8px}
+.work-card-body p{font-size:12px;color:#555;line-height:1.6;margin-bottom:10px}
+.work-card-body .card-cat{
+  display:inline-block;background:var(--pink);border:2px solid var(--black);
+  padding:3px 10px;font-size:10px;font-weight:700;margin-bottom:8px;
+}
+.work-card-body .card-link{
+  display:inline-block;background:var(--black);color:var(--pink);border:var(--bw) solid var(--black);
+  padding:8px 20px;font-weight:900;font-size:12px;letter-spacing:1px;
+  text-decoration:none;transition:transform .1s;
+}
+.work-card-body .card-link:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--pink)}
+.work-card-body .card-del{
+  display:inline-block;background:#ff4466;color:#fff;border:2px solid #000;
+  padding:6px 12px;font-weight:900;font-size:10px;cursor:pointer;
+  margin-left:8px;transition:transform .1s;
+}
+.work-card-body .card-del:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 #000}
+
+.empty-state{
+  text-align:center;padding:60px 36px;color:#888;
+}
+.empty-state .icon{font-size:48px;color:var(--pink);margin-bottom:16px}
+.empty-state p{font-weight:700;font-size:14px;margin-bottom:8px}
+.empty-state .sub{font-size:12px;color:#aaa}
+
+/* ================================================================
+   SECTION 3 - SPACE DESIGN
+   ================================================================ */
+#space{background:#fff}
+.space-layout{display:grid;grid-template-columns:2fr 1fr;min-height:70vh}
+.space-main{padding:40px 36px;border-right:var(--bw) solid var(--black)}
+.space-side{padding:40px 36px;background:var(--dark-bg);color:#fff}
+
+.render-frame{
+  border:var(--bw) solid var(--black);padding:8px;margin-bottom:20px;
+  background:#eee;position:relative;
+}
+.render-frame .render-inner{
+  height:260px;background:linear-gradient(180deg,#bbb 0%,#999 40%,#666 100%);
+  position:relative;overflow:hidden;
+}
+.render-frame .render-inner .concrete-block{
+  position:absolute;background:#888;border:2px solid #555;
+}
+.render-frame .render-inner .steel-line{
+  position:absolute;height:3px;background:#444;
+}
+.render-frame .render-inner .screen{
+  position:absolute;background:#111;border:2px solid var(--pink);
+}
+.render-frame .label{
+  position:absolute;bottom:-20px;left:8px;
+  font-size:9px;font-weight:800;color:#888;font-family:'Courier New',monospace;
+}
+
+.cad-sketch{
+  border:var(--bw) solid var(--black);padding:16px;margin-bottom:16px;
+  background:#fff;min-height:120px;position:relative;
+}
+.cad-sketch .cad-line{
+  position:absolute;height:1px;background:var(--black);
+}
+.cad-sketch .cad-dim{
+  position:absolute;font-size:8px;font-family:'Courier New',monospace;color:#888;font-weight:700;
+}
+
+.concept-block{
+  background:var(--black);border:2px solid var(--pink);padding:12px;margin-bottom:14px;
+}
+.concept-block h4{color:var(--pink);font-weight:900;font-size:12px;letter-spacing:1px;margin-bottom:6px}
+.concept-block p{font-size:11px;color:#ccc;line-height:1.5}
+
+.geo-accent{
+  position:absolute;border:var(--bw) solid var(--pink);opacity:0.3;
+}
+
+/* ================================================================
+   SECTION 4 - AIGC
+   ================================================================ */
+#aigc{background:var(--bg)}
+.aigc-layout{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.aigc-left{padding:40px 36px;border-right:var(--bw) solid var(--black)}
+.aigc-right{padding:40px 36px}
+
+.aigc-frame{
+  border:var(--bw) solid var(--black);margin-bottom:20px;
+  position:relative;overflow:hidden;
+  background:var(--dark-bg);
+}
+.aigc-frame .aigc-img{
+  height:200px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#1a0a1a,#0a1a2a,#1a1a0a);
+}
+.aigc-frame .aigc-img .pixel-strip{
+  position:absolute;height:3px;opacity:0.6;
+  animation:pxStrip .2s steps(2) infinite alternate;
+}
+@keyframes pxStrip{0%{transform:translateX(0);opacity:0.6}100%{transform:translateX(6px);opacity:0.3}}
+.aigc-frame .aigc-img .color-shift{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:linear-gradient(90deg,transparent 0%,var(--pink) 30%,transparent 35%,transparent 65%,#00ff88 70%,transparent 75%);
+  opacity:0.08;animation:colorShift 3s steps(10) infinite;
+}
+@keyframes colorShift{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.aigc-frame .aigc-img .abstract-shape{
+  position:absolute;border:3px solid;
+}
+.aigc-frame .aigc-label{
+  padding:8px 12px;border-top:var(--bw) solid #333;
+  font-size:10px;color:#888;font-family:'Courier New',monospace;font-weight:700;
+}
+
+.prompt-win{
+  background:var(--black);border:var(--bw) solid #333;margin-bottom:16px;
+}
+.prompt-win .prompt-bar{
+  background:#333;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:2px solid #444;
+}
+.prompt-win .prompt-bar span{color:var(--pink);font-weight:900;font-size:10px;font-family:'Courier New',monospace;letter-spacing:1px}
+.prompt-win .prompt-body{padding:10px 14px;font-family:'Courier New',monospace;font-size:10px;line-height:1.6;color:#aaa}
+.prompt-win .prompt-body .kw{color:var(--pink)}
+.prompt-win .prompt-body .val{color:#00ff88}
+
+.idea-note{
+  border-left:4px solid var(--pink);padding:8px 12px;margin-bottom:14px;
+  background:rgba(255,116,194,0.05);
+}
+.idea-note span{font-size:11px;font-weight:700;color:var(--pink);display:block;margin-bottom:3px}
+.idea-note p{font-size:11px;color:#666;line-height:1.5;font-style:italic}
+
+/* ===== FOOTER ===== */
+.footer{
+  background:var(--black);color:#fff;padding:20px 32px;
+  text-align:center;font-weight:700;font-size:11px;letter-spacing:2px;
+  border-top:var(--bw) solid var(--pink);
+}
+.footer .line{color:var(--pink);margin:0 8px}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s,transform .6s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .profile-grid{padding:32px 16px}
+  .profile-left,.profile-right{max-width:100%;padding:20px 0}
+  .inter-grid,.aigc-layout{grid-template-columns:1fr}
+  .space-layout{grid-template-columns:1fr}
+  .inter-left,.aigc-left,.space-main{border-right:none;border-bottom:var(--bw) solid var(--black)}
+  .nav-links a{padding:10px 10px;font-size:9px}
+  .geo,.tri,.wire,.chip,.geo-accent{display:none!important}
+  .cover-hero{padding:40px 20px;min-height:auto}
+  .cover-lower{min-height:auto;padding:28px 16px}
+  .render-frame .render-inner{height:180px}
+  .section-work-grid{grid-template-columns:1fr}
+  .edu-item .school{font-size:22px!important}
+}
+@media(max-width:480px){
+  .nav-links a .en-text{display:none}
+  .profile-grid{padding:24px 12px}
+  .profile-left,.profile-right{max-width:100%;padding:16px 0}
+  .inter-left,.inter-right,.aigc-left,.aigc-right,.space-main,.space-side{padding:24px 16px}
+  .section-dynamic-area{padding:20px 16px}
+  .admin-modal-inner{width:95vw}
+  .section-work-grid{grid-template-columns:1fr}
+  .edu-item .school{font-size:20px!important}
+}
+
+/* ===== ADMIN PANEL / MODAL ===== */
+.admin-btn{
+  background:var(--pink);color:var(--black);border:var(--bw) solid var(--black);
+  padding:6px 14px;font-family:inherit;font-weight:900;font-size:11px;letter-spacing:1px;
+  cursor:pointer;transition:transform .1s;display:flex;align-items:center;gap:6px;
+}
+.admin-btn:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--black)}
+
+.admin-modal{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:2000;
+  background:rgba(0,0,0,0.85);
+}
+.admin-modal.open{display:flex;align-items:center;justify-content:center}
+
+.admin-modal-inner{
+  width:min(520px,90vw);background:var(--black);border:var(--bw) solid var(--pink);
+  position:relative;max-height:90vh;overflow-y:auto;
+}
+.admin-modal-bar{
+  background:var(--pink);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:var(--bw) solid var(--black);position:sticky;top:0;z-index:10;
+}
+.admin-modal-bar .title{color:var(--black);font-weight:900;font-size:13px;letter-spacing:2px}
+.admin-close{
+  background:var(--black);color:var(--pink);border:2px solid var(--pink);
+  width:28px;height:28px;cursor:pointer;font-weight:900;font-size:14px;
+  display:flex;align-items:center;justify-content:center;
+}
+.admin-close:hover{background:#ff4466;color:#fff;border-color:#fff}
+
+.admin-body{padding:24px;color:#fff}
+
+.form-label{
+  color:var(--pink);font-weight:900;font-size:12px;letter-spacing:1px;margin-bottom:6px;display:block;
+}
+.form-input{
+  width:100%;padding:10px 12px;border:var(--bw) solid #555;background:#222;color:#fff;
+  font-family:'Courier New',monospace;font-size:12px;margin-bottom:14px;
+}
+.form-input:focus{border-color:var(--pink);outline:none}
+.form-input::placeholder{color:#888}
+
+.form-row{display:flex;gap:12px;margin-bottom:14px}
+.form-row .form-col{flex:1}
+
+.form-select{
+  width:100%;padding:10px;border:var(--bw) solid #555;background:#222;color:var(--pink);
+  font-family:inherit;font-weight:700;font-size:12px;margin-bottom:14px;
+}
+.form-select:focus{border-color:var(--pink);outline:none}
+
+.form-submit{
+  width:100%;padding:14px;background:var(--pink);color:var(--black);
+  border:var(--bw) solid var(--black);font-family:inherit;font-weight:900;font-size:14px;
+  letter-spacing:2px;cursor:pointer;transition:transform .1s;
+}
+.form-submit:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--black)}
+
+.form-cancel{
+  width:100%;padding:10px;background:transparent;color:#ff4466;
+  border:3px solid #ff4466;font-family:inherit;font-weight:900;font-size:12px;
+  letter-spacing:1px;cursor:pointer;transition:transform .1s;margin-top:8px;
+}
+.form-cancel:hover{transform:translate(-2px,-2px);box-shadow:3px 3px 0 #ff4466}
+
+/* ===== MULTI-IMAGE UPLOAD ===== */
+.img-upload-area{
+  border:var(--bw) solid #555;background:#111;padding:16px;margin-bottom:14px;
+}
+.img-upload-row{
+  display:flex;gap:12px;margin-bottom:12px;align-items:flex-end;
+}
+.img-upload-row .form-col{flex:1}
+.img-add-btn{
+  background:var(--pink);color:var(--black);border:var(--bw) solid var(--black);
+  padding:10px 16px;font-family:inherit;font-weight:900;font-size:12px;
+  cursor:pointer;transition:transform .1s;white-space:nowrap;
+}
+.img-add-btn:hover{transform:translate(-3px,-3px);box-shadow:4px 4px 0 var(--black)}
+
+.pending-imgs{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;
+}
+.pending-img-item{
+  width:80px;position:relative;border:2px solid #555;background:#222;
+  overflow:hidden;
+}
+.pending-img-item img{width:100%;height:60px;object-fit:cover}
+.pending-img-item .pi-del{
+  position:absolute;top:2px;right:2px;background:#ff4466;color:#fff;
+  width:18px;height:18px;font-weight:900;font-size:9px;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #fff;
+}
+.pending-img-item .pi-idx{
+  position:absolute;bottom:2px;left:2px;background:var(--black);color:var(--pink);
+  padding:1px 4px;font-size:8px;font-weight:900;font-family:'Courier New',monospace;
+}
+.pending-img-empty{
+  color:#666;font-size:11px;font-weight:700;padding:8px;text-align:center;
+}
+
+/* ===== MANAGE LIST IN MODAL ===== */
+.manage-list{margin-top:20px;border-top:3px solid #555;padding-top:16px}
+.manage-list-title{color:var(--pink);font-weight:900;font-size:12px;letter-spacing:1px;margin-bottom:12px}
+.manage-item{
+  display:flex;align-items:center;gap:10px;padding:8px;border:2px solid #333;margin-bottom:6px;
+}
+.manage-item .mi-title{font-size:11px;color:#ccc;font-weight:700;flex:1}
+.manage-item .mi-cat{font-size:9px;color:var(--pink);font-weight:900}
+.manage-item .mi-imgs{font-size:8px;color:#888;font-family:'Courier New',monospace}
+.manage-item .mi-del{
+  background:#ff4466;color:#fff;border:2px solid #fff;padding:4px 8px;
+  font-weight:900;font-size:10px;cursor:pointer;font-family:inherit;
+}
+.manage-item .mi-edit{
+  background:var(--pink);color:var(--black);border:2px solid var(--black);
+  padding:4px 8px;font-weight:900;font-size:10px;cursor:pointer;font-family:inherit;
+  transition:transform .1s;
+}
+.manage-item .mi-edit:hover{transform:translate(-1px,-1px);box-shadow:2px 2px 0 #000}
+
+.add-work-fab{
+  position:fixed;bottom:24px;right:24px;z-index:1500;
+  background:var(--pink);color:var(--black);border:var(--bw) solid var(--black);
+  width:56px;height:56px;cursor:pointer;font-weight:900;font-size:24px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:4px 4px 0 var(--black);transition:transform .15s;
+}
+.add-work-fab:hover{transform:translate(-4px,-4px);box-shadow:8px 8px 0 var(--black)}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+
+<!-- ===== NAV ===== -->
+<nav class="nav-bar">
+  <div class="nav-logo pj">&#9608; MYX.v1.0</div>
+  <div class="nav-links">
+    <a href="#cover" class="active"><span class="nav-num">00</span>COVER</a>
+    <a href="#profile"><span class="nav-num">01</span>PROFILE</a>
+    <a href="#interactive"><span class="nav-num">02</span>INTERACTIVE</a>
+    <a href="#space"><span class="nav-num">03</span>SPACE</a>
+    <a href="#aigc"><span class="nav-num">04</span>AIGC</a>
+    <a href="#myworks"><span class="nav-num">05</span>WORKS</a>
+  </div>
+  <button class="admin-btn" onclick="toggleAdmin()">&#9608; ADMIN</button>
+</nav>
+
+<!-- ================================================================
+     SECTION 00 - COVER
+     ================================================================ -->
+<section id="cover" style="padding-top:48px">
+  <div class="cover-top pj">
+    <span class="dot"></span>PORTFOLIO v1.0<span class="dot"></span>
+  </div>
+  <div class="cover-hero">
+    <div class="geo" style="top:20px;left:20px;width:26px;height:26px;background:var(--pink)"></div>
+    <div class="geo" style="top:56px;left:50px;width:16px;height:16px;background:#00ff88;border-width:3px"></div>
+    <div class="geo" style="top:36px;right:28px;width:20px;height:20px;background:var(--pink);transform:rotate(15deg)"></div>
+    <div class="tri" style="bottom:56px;left:36px"></div>
+    <div class="tri" style="bottom:76px;right:44px;border-bottom-color:#00ff88;transform:scale(.7)"></div>
+    <div class="tri" style="top:50%;left:6%;border-bottom-color:var(--pink);transform:rotate(180deg) scale(.5)"></div>
+    <div class="wire" style="top:88px;left:0;width:110px"></div>
+    <div class="wire" style="bottom:44px;right:0;width:70px"></div>
+    <div class="wire" style="top:50%;left:0;width:50px;height:1px;background:#888"></div>
+
+    <div class="name-block">
+      <span class="name">
+        <span class="gc">毛</span><span class="gc" style="animation-delay:.03s">宇</span><span class="gc" style="animation-delay:.06s">欣</span>
+      </span>
+      <span class="dsgn glitch" data-text="DESIGNS.">DESIGNS.</span>
+    </div>
+    <div class="cover-info">南京工业大学 <span class="sq"></span> 艺术与科技专业</div>
+    <div class="cover-dirs">
+      交互设计<span class="ds"></span>空间设计<span class="ds"></span>视觉传达<span class="ds"></span>AIGC数字艺术
+    </div>
+    <div class="cover-cta">
+      <a href="#interactive" class="btn btn-pk">查看作品</a>
+      <a href="#profile" class="btn btn-bk">联系我</a>
+    </div>
+  </div>
+
+  <div class="cover-lower">
+    <div class="geo" style="width:22px;height:22px;background:#00ff88;top:24px;left:24px"></div>
+    <div class="geo" style="width:16px;height:16px;background:var(--black);top:24px;right:24px;transform:rotate(45deg)"></div>
+    <div class="geo" style="width:28px;height:14px;background:#fff;bottom:24px;left:44px;border-width:3px"></div>
+    <div class="geo" style="width:12px;height:12px;background:#ffcc00;bottom:24px;right:36px;border-width:3px"></div>
+    <div class="tri" style="top:56px;right:56px;transform:rotate(30deg)"></div>
+    <div class="tri" style="bottom:64px;left:16px;transform:rotate(-15deg) scale(.6);border-bottom-color:var(--black)"></div>
+    <div class="wire" style="top:76px;left:8%;width:56px"></div>
+    <div class="wire" style="bottom:90px;right:4%;width:36px;height:1px;background:#555"></div>
+
+    <div class="win98 pj" style="animation-delay:.5s;width:min(400px,88vw)">
+      <div class="win98-bar">
+        <span class="t">MAO_YUXIN.EXE</span>
+        <div class="win98-dots"><span class="wd wd-r"></span><span class="wd wd-y"></span><span class="wd wd-g"></span></div>
+      </div>
+      <div class="win98-body">
+        <div style="height:8px;background:rgba(255,255,255,.7);margin-bottom:10px;width:85%"></div>
+        <div style="height:8px;background:rgba(255,255,255,.7);margin-bottom:10px;width:100%"></div>
+        <div style="height:8px;background:rgba(255,255,255,.7);margin-bottom:10px;width:65%"></div>
+        <div class="prog-wrap">
+          <div class="prog-bar"><div class="prog-fill"></div></div>
+        </div>
+        <div class="prog-100">LOADING... 100%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 01 - PROFILE
+     ================================================================ -->
+<section id="profile">
+  <div class="section-title-bar">
+    <span class="num">01</span>
+    PROFILE 个人简历
+    <span class="en">EDUCATION & CORE SKILLS</span>
+  </div>
+  <div class="profile-grid">
+    <!-- ===== 教育背景 ===== -->
+    <div class="profile-left">
+      <div class="profile-subtitle">// 教育背景</div>
+
+      <div class="avatar-win98">
+        <div>
+          <div class="win98-dots" style="margin-bottom:6px"><span class="wd wd-r" style="width:8px;height:8px;border-width:1px"></span><span class="wd wd-y" style="width:8px;height:8px;border-width:1px"></span><span class="wd wd-g" style="width:8px;height:8px;border-width:1px"></span></div>
+          <div>PHOTO</div>
+        </div>
+      </div>
+
+      <div class="edu-item">
+        <div class="school">南京工业大学</div>
+        <div class="major">艺术与科技专业</div>
+        <div class="time">2024.09 - 2028.06</div>
+        <div class="courses">
+          主修：交互设计原理、展示空间设计、数字媒体艺术、<br>
+          视觉传达设计、用户体验研究、新媒体装置艺术
+        </div>
+      </div>
+
+      <div class="edu-item" style="margin-top:32px">
+        <div class="school" style="font-size:20px">毛宇欣 <span style="color:var(--pink);font-size:16px">MAO YUXIN</span></div>
+        <div class="time" style="font-size:14px">交互设计 · 空间设计 · 视觉传达 · AIGC</div>
+        <div class="annotate" style="margin-top:10px;font-size:14px">// 专注于艺术与科技跨界融合创作</div>
+        <div class="annotate-hand" style="font-size:14px">// 用粗暴的方式表达细腻的思考</div>
+      </div>
+
+      <!-- ===== 实践经历 ===== -->
+      <div class="practice-block reveal">
+        <h4>// 实践经历</h4>
+        <div class="practice-item">泡泡玛特Molly温度系列H5交互设计 — 独立开发6关刮奖流程</div>
+        <div class="practice-item">南京动漫博览会展位空间设计 — 主导展位环境全案</div>
+        <div class="practice-item">个人作品集网站全栈开发 — 极简暗金+后台管理面板</div>
+        <div class="practice-item">AIGC数字生成艺术实验 — 跨媒介概念创作</div>
+      </div>
+    </div>
+
+    <!-- ===== 核心能力 ===== -->
+    <div class="profile-right">
+      <div class="profile-subtitle">// 核心能力</div>
+
+      <div class="skill-item">
+        <div class="skill-label">交互界面设计 <span class="pct">92%</span></div>
+        <div class="skill-bar-wrap"><div class="skill-bar"><div class="skill-bar-fill" style="--w:92%"></div></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-label">展厅空间装置 <span class="pct">88%</span></div>
+        <div class="skill-bar-wrap"><div class="skill-bar"><div class="skill-bar-fill" style="--w:88%"></div></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-label">AIGC数字生成 <span class="pct">85%</span></div>
+        <div class="skill-bar-wrap"><div class="skill-bar"><div class="skill-bar-fill" style="--w:85%"></div></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-label">新媒体艺术 <span class="pct">80%</span></div>
+        <div class="skill-bar-wrap"><div class="skill-bar"><div class="skill-bar-fill" style="--w:80%"></div></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-label">视觉传达 <span class="pct">90%</span></div>
+        <div class="skill-bar-wrap"><div class="skill-bar"><div class="skill-bar-fill" style="--w:90%"></div></div></div>
+      </div>
+
+      <!-- ===== 工具栈 ===== -->
+      <div class="win98 reveal" style="margin:36px auto 0;max-width:420px">
+        <div class="win98-bar">
+          <span class="t">TOOLS.SYS</span>
+          <div class="win98-dots"><span class="wd wd-r"></span><span class="wd wd-y"></span><span class="wd wd-g"></span></div>
+        </div>
+        <div class="win98-body">
+          <div class="code-block" style="border:none;padding:0;font-size:15px">
+            <span class="prompt">&gt;</span> <span class="kw">Figma</span> · <span class="kw">Blender</span> · <span class="kw">Arduino</span><br>
+            <span class="prompt">&gt;</span> <span class="kw">Midjourney</span> · <span class="kw">ComfyUI</span><br>
+            <span class="prompt">&gt;</span> <span class="kw">HTML/CSS/JS</span> · <span class="kw">Three.js</span><br>
+            <span class="prompt">&gt;</span> <span class="str">[SYSTEM] ALL MODULES LOADED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== 联系方式 ===== -->
+      <div class="contact-block reveal">
+        <h4>// 联系方式 CONTACT</h4>
+        <div class="contact-item">📞 电话：19956593313</div>
+        <div class="contact-item">📧 邮箱：mao2737399929.qq.com</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 02 - INTERACTIVE DESIGN
+     ================================================================ -->
+<section id="interactive">
+  <div class="section-title-bar">
+    <span class="num">02</span>
+    交互设计 INTERACTIVE DESIGN
+  </div>
+  <div class="inter-grid">
+    <!-- LEFT -->
+    <div class="inter-left" id="interBuiltinLeft">
+      <!-- JS rendered -->
+    </div>
+    <!-- RIGHT -->
+    <div class="inter-right" id="interBuiltinRight">
+      <!-- JS rendered -->
+    </div>
+  </div>
+
+  <!-- ===== DYNAMIC INTERACTIVE WORKS ===== -->
+  <div class="section-dynamic-area" id="interDynamicArea" style="background:linear-gradient(135deg,#fff 0%,#fef0f7 100%)">
+    <div class="section-dynamic-label">// 动态添加作品 ▸ 交互设计</div>
+    <div class="section-work-grid" id="interWorksGrid">
+      <!-- JS rendered -->
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 03 - SPACE DESIGN
+     ================================================================ -->
+<section id="space">
+  <div class="section-title-bar">
+    <span class="num">03</span>
+    空间设计 SPACE DESIGN
+  </div>
+  <div class="space-layout">
+    <div class="space-main">
+      <div class="geo" style="top:16px;right:16px;width:22px;height:22px;background:var(--pink)"></div>
+      <div class="wire" style="top:60px;left:0;width:90px"></div>
+
+      <div class="render-frame reveal">
+        <div class="render-inner">
+          <div class="concrete-block" style="left:0;top:0;width:100%;height:40%"></div>
+          <div class="concrete-block" style="left:0;bottom:0;width:30%;height:60%"></div>
+          <div class="concrete-block" style="right:0;bottom:0;width:35%;height:55%"></div>
+          <div class="steel-line" style="left:30%;top:20%;width:40%"></div>
+          <div class="steel-line" style="left:30%;top:60%;width:35%"></div>
+          <div class="screen" style="top:30%;left:35%;width:28%;height:25%"></div>
+          <div style="position:absolute;bottom:8px;right:12px;font-size:9px;font-weight:900;color:var(--pink)">EXPO_01</div>
+        </div>
+        <div class="label">南京动漫博览会展位 · 人视广角效果图</div>
+      </div>
+
+      <div class="render-frame reveal" style="margin-top:36px">
+        <div class="render-inner" style="height:180px">
+          <div class="concrete-block" style="left:10%;top:10%;width:80%;height:80%;background:#999"></div>
+          <div class="screen" style="top:15%;left:15%;width:70%;height:40%"></div>
+          <div class="steel-line" style="left:10%;top:70%;width:80%;background:var(--pink);height:2px"></div>
+          <div style="position:absolute;top:75%;left:16%;font-size:8px;color:var(--pink);font-weight:900">LED_STRIP // 外露灯带</div>
+          <div style="position:absolute;bottom:8px;right:12px;font-size:9px;font-weight:900;color:var(--pink)">EXPO_02</div>
+        </div>
+        <div class="label">沉浸式新媒体毕业展馆 · 概念效果图</div>
+      </div>
+
+      <div class="cad-sketch reveal" style="margin-top:36px">
+        <div class="cad-line" style="left:10%;top:20%;width:80%;transform:rotate(0deg)"></div>
+        <div class="cad-line" style="left:10%;top:50%;width:60%;transform:rotate(0deg)"></div>
+        <div class="cad-line" style="left:30%;top:10%;width:1px;height:60%;background:var(--black);width:0"></div>
+        <div class="cad-dim" style="left:12%;top:18%">12000</div>
+        <div class="cad-dim" style="left:62%;top:48%">6000</div>
+        <div class="cad-dim" style="left:50%;top:4%;color:var(--pink)">PLAN_VIEW // 平面草图</div>
+      </div>
+    </div>
+
+    <div class="space-side">
+      <div class="geo" style="top:16px;left:16px;width:16px;height:16px;background:var(--pink);border-color:var(--pink)"></div>
+      <div class="tri" style="bottom:20px;right:16px;border-bottom-color:var(--pink);transform:rotate(20deg) scale(.7)"></div>
+
+      <div class="concept-block reveal">
+        <h4>// 方案概念</h4>
+        <p>清水混凝土毛坯展馆 + 外露钢结构管线，巨型几何隔断划分空间动线，嵌入式电子投影屏幕营造数字沉浸氛围</p>
+      </div>
+      <div class="concept-block reveal">
+        <h4>// 材质分析</h4>
+        <p>清水混凝土 / 外露钢结构 / LED裸灯带 / 数字投影幕 / 荧光喷绘涂鸦</p>
+      </div>
+      <div class="concept-block reveal">
+        <h4>// 人流动线</h4>
+        <p>入口引导 → 主展陈区 → 沉浸体验区 → 互动装置区 → 衍生品区，单向流动避免交叉回流</p>
+      </div>
+
+      <div class="win98 reveal" style="margin-top:20px">
+        <div class="win98-bar">
+          <span class="t">SPACE_SPEC.DAT</span>
+          <div class="win98-dots"><span class="wd wd-r"></span><span class="wd wd-y"></span><span class="wd wd-g"></span></div>
+        </div>
+        <div class="win98-body">
+          <div class="code-block" style="border:none;padding:0">
+            <span class="prompt">&gt;</span> 面积: <span class="val">6m x 8m</span><br>
+            <span class="prompt">&gt;</span> 层高: <span class="val">4.2m</span><br>
+            <span class="prompt">&gt;</span> 方案: <span class="kw">单层平面</span><br>
+            <span class="prompt">&gt;</span> 投影: <span class="val">3面墙+地面</span><br>
+            <span class="prompt">&gt;</span> <span class="str">[READY FOR DEPLOY]</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DYNAMIC SPACE WORKS ===== -->
+  <div class="section-dynamic-area" id="spaceDynamicArea" style="background:linear-gradient(135deg,#f0f5ff 0%,#e8f0fe 100%)">
+    <div class="section-dynamic-label">// 动态添加作品 ▸ 空间设计</div>
+    <div class="section-work-grid" id="spaceWorksGrid">
+      <!-- JS rendered -->
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 04 - AIGC GENERATIVE ART
+     ================================================================ -->
+<section id="aigc">
+  <div class="section-title-bar">
+    <span class="num">04</span>
+    AIGC 数字生成艺术 GENERATIVE ART
+  </div>
+  <div class="aigc-layout">
+    <div class="aigc-left">
+      <div class="geo" style="top:16px;left:16px;width:18px;height:18px;background:#ffcc00;border-width:3px"></div>
+      <div class="wire" style="top:50px;right:0;width:50px"></div>
+
+      <div class="aigc-frame reveal">
+        <div class="aigc-img">
+          <div class="abstract-shape" style="top:20%;left:15%;width:30%;height:40%;border-color:var(--pink);background:rgba(255,116,194,0.1)"></div>
+          <div class="abstract-shape" style="top:30%;left:50%;width:25%;height:35%;border-color:#00ff88;background:rgba(0,255,136,0.05);transform:rotate(15deg)"></div>
+          <div class="abstract-shape" style="top:10%;right:10%;width:20%;height:25%;border-color:#ffcc00;background:rgba(255,204,0,0.05);transform:rotate(-10deg)"></div>
+          <div class="pixel-strip" style="top:25%;left:0;width:100%;background:var(--pink)"></div>
+          <div class="pixel-strip" style="top:55%;left:0;width:70%;background:#00ff88"></div>
+          <div class="pixel-strip" style="top:80%;left:0;width:40%;background:#ffcc00"></div>
+          <div class="color-shift"></div>
+        </div>
+        <div class="aigc-label">CONCRETE_CYBER_001.PNG // 混凝土+电路赛博融合</div>
+      </div>
+
+      <div class="aigc-frame reveal">
+        <div class="aigc-img" style="height:140px">
+          <div class="abstract-shape" style="top:10%;left:10%;width:80%;height:60%;border-color:var(--pink);background:rgba(255,116,194,0.08)"></div>
+          <div class="pixel-strip" style="top:30%;left:0;width:90%;background:var(--pink)"></div>
+          <div class="pixel-strip" style="top:60%;left:0;width:50%;background:#00ff88"></div>
+          <div class="color-shift"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;font-weight:900;color:var(--pink);text-shadow:2px 2px #000">AI://GLITCH</div>
+        </div>
+        <div class="aigc-label">DATA_CORRUPTION_002.PNG // 像素撕裂色彩错位</div>
+      </div>
+
+      <div class="idea-note reveal">
+        <span>// 创作理念</span>
+        <p>混凝土粗野形体与电路赛博的融合——在毛坯中嵌入数字，在故障中寻找秩序</p>
+      </div>
+    </div>
+
+    <div class="aigc-right">
+      <div class="geo" style="top:16px;right:16px;width:20px;height:20px;background:var(--pink);border-width:3px;transform:rotate(45deg)"></div>
+      <div class="tri" style="bottom:24px;left:24px;border-bottom-color:#ffcc00;transform:rotate(-25deg) scale(.7)"></div>
+
+      <div class="prompt-win reveal">
+        <div class="prompt-bar">
+          <span>PROMPT_01.TXT</span>
+          <div class="win98-dots"><span class="wd wd-r"></span><span class="wd wd-y"></span><span class="wd wd-g"></span></div>
+        </div>
+        <div class="prompt-body">
+          <span class="kw">Neo Brutalism</span>, concrete brutalist form fused with <span class="kw">exposed circuit</span> cybernetics, <span class="kw">neon pink #FF74C2</span> + <span class="kw">pure black</span>, pixel <span class="kw">glitch</span> distortion, silkscreen grain, Y2K cyber brutal fusion, <span class="val">8K print quality</span>
+        </div>
+      </div>
+
+      <div class="aigc-frame reveal">
+        <div class="aigc-img" style="height:160px">
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px;padding:8px">
+            <div style="background:linear-gradient(135deg,#1a0a1a,#2a0a2a);border:2px solid var(--pink)"></div>
+            <div style="background:linear-gradient(135deg,#0a1a2a,#0a2a1a);border:2px solid #00ff88"></div>
+            <div style="background:linear-gradient(135deg,#1a1a0a,#2a2a0a);border:2px solid #ffcc00"></div>
+            <div style="background:linear-gradient(135deg,#0a0a1a,#1a0a2a);border:2px solid var(--pink)"></div>
+            <div style="background:linear-gradient(135deg,#1a0a0a,#2a1a0a);border:2px solid #ffcc00"></div>
+            <div style="background:linear-gradient(135deg,#0a1a0a,#0a2a1a);border:2px solid #00ff88"></div>
+          </div>
+          <div class="pixel-strip" style="top:40%;left:0;width:100%;background:var(--pink);height:2px"></div>
+          <div class="color-shift"></div>
+        </div>
+        <div class="aigc-label">STORYBOARD_003.PNG // 分镜实验短片单帧</div>
+      </div>
+
+      <div class="prompt-win reveal" style="margin-top:16px">
+        <div class="prompt-bar">
+          <span>PROMPT_02.TXT</span>
+          <div class="win98-dots"><span class="wd wd-r"></span><span class="wd wd-y"></span><span class="wd wd-g"></span></div>
+        </div>
+        <div class="prompt-body">
+          <span class="kw">AIGC</span> generative art, <span class="kw">CRT scanline</span> texture, multi-panel <span class="kw">storyboard</span> layout, experimental film frames, <span class="kw">concrete sculpture</span> projection mapping, <span class="val">digital brutalism</span> aesthetic
+        </div>
+      </div>
+
+      <div class="idea-note reveal">
+        <span>// 跨媒介实验</span>
+        <p>AI生成图像投影在水泥粗野雕塑上的融合概念——数字与物理的碰撞</p>
+      </div>
+
+      <div class="chip" style="position:relative;width:40px;height:28px;margin-top:16px;display:inline-block"></div>
+      <div class="annotate-hand" style="display:inline;margin-left:8px">// CHIP_04 // 数据流装饰</div>
+    </div>
+  </div>
+
+  <!-- ===== DYNAMIC AIGC WORKS ===== -->
+  <div class="section-dynamic-area" id="aigcDynamicArea" style="background:linear-gradient(135deg,#fff9f0 0%,#fff3e0 100%)">
+    <div class="section-dynamic-label">// 动态添加作品 ▸ AIGC生成艺术</div>
+    <div class="section-work-grid" id="aigcWorksGrid">
+      <!-- JS rendered -->
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     SECTION 05 - MY WORKS (All)
+     ================================================================ -->
+<section id="myworks" style="background:linear-gradient(180deg,#fff 0%,#f5f0f5 100%)">
+  <div class="section-title-bar">
+    <span class="num">05</span>
+    MY WORKS 全部作品
+    <span class="en">DYNAMIC PORTFOLIO</span>
+  </div>
+  <div id="worksContainer">
+    <!-- Dynamic content rendered by JS -->
+  </div>
+</section>
+
+<!-- ===== ADMIN MODAL ===== -->
+<div class="admin-modal" id="adminModal">
+  <div class="admin-modal-inner">
+    <div class="admin-modal-bar">
+      <span class="title">&#9608; ADD_WORK.SYS</span>
+      <button class="admin-close" onclick="toggleAdmin()">X</button>
+    </div>
+    <div class="admin-body">
+      <div class="form-label">// 作品名称</div>
+      <input class="form-input" id="workTitle" placeholder="例：泡泡玛特 H5 刮刮乐" />
+
+      <div class="form-label">// 作品描述</div>
+      <input class="form-input" id="workDesc" placeholder="简述创作内容、技术、亮点" />
+
+      <div class="form-row">
+        <div class="form-col">
+          <div class="form-label">// 分类板块</div>
+          <select class="form-select" id="workCat">
+            <option value="交互设计">交互设计 INTERACTIVE</option>
+            <option value="空间设计">空间设计 SPACE</option>
+            <option value="AIGC">AIGC 生成艺术</option>
+            <option value="视觉传达">视觉传达 VISUAL</option>
+            <option value="其他">其他 OTHER</option>
+          </select>
+        </div>
+        <div class="form-col">
+          <div class="form-label">// 作品网页链接</div>
+          <input class="form-input" id="workLink" placeholder="https://your-project.com" />
+        </div>
+      </div>
+
+      <div class="form-label">// 作品图片（支持多张）</div>
+      <div class="img-upload-area">
+        <div class="img-upload-row">
+          <div class="form-col">
+            <div class="form-label" style="font-size:10px;color:#888">图片URL</div>
+            <input class="form-input" id="workImgUrl" placeholder="https://image-url.jpg" />
+          </div>
+          <div class="form-col">
+            <div class="form-label" style="font-size:10px;color:#888">或上传本地图片</div>
+            <input type="file" accept="image/*" id="workImgFile" style="width:100%;padding:8px;background:#222;border:3px solid #555;color:#aaa;font-size:11px;margin-bottom:0" />
+          </div>
+          <button class="img-add-btn" onclick="addPendingImg()">+ 添加图片</button>
+        </div>
+        <div class="pending-imgs" id="pendingImgs">
+          <div class="pending-img-empty">暂无图片 — 点击「+ 添加图片」逐张添加</div>
+        </div>
+      </div>
+
+      <button class="form-submit" onclick="addWork()">+ 提交作品 ADD WORK</button>
+      <button class="form-cancel" id="cancelEditBtn" onclick="resetForm()" style="display:none">× 取消编辑</button>
+
+      <div class="manage-list" id="manageList">
+        <div class="manage-list-title">// 已添加作品管理</div>
+        <div id="manageItems"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FLOATING ADD BUTTON ===== -->
+<button class="add-work-fab" onclick="toggleAdmin()">+</button>
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  Y2K CYBER BRUTAL FUSION<span class="line">&#9608;</span>ART & TECH<span class="line">&#9608;</span>NANJING TECH<span class="line">&#9608;</span>2026
+</div>
+
+<script>
+// ===== DATA STORE =====
+const STORE_KEY='myx_portfolio_works_v4';
+const BUILTIN_KEY='myx_portfolio_builtin_v2';
+function getWorks(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||[]}catch(e){return[]}}
+function saveWorks(w){localStorage.setItem(STORE_KEY,JSON.stringify(w))}
+
+// Built-in interactive works (pre-populated defaults)
+const BUILTIN_DEFAULTS=[
+  {
+    id:'builtin_01',title:'泡泡玛特 H5 刮刮乐 v2',cat:'交互设计',
+    desc:'Molly温度系列互动H5，6关刮奖流程，治愈系蜡笔手绘质感，光环动态呼吸按钮',
+    link:'https://maoyuxin-art.github.io/POP-MART-SP',imgs:[],heroImage:'',
+    meta:'Figma · HTML/CSS/JS · GitHub Pages',
+    layout:'left',winTitle:'POP_MART_H5.EXE',
+    style:'dark',tag:'MOLLY ♡ 温度系列',deco:[]
+  },
+  {
+    id:'builtin_02',title:'个人作品集网站',cat:'交互设计',
+    desc:'极简暗色底+金色强调#0a0a0a/#c9b99a，后台管理面板支持作品增删、自由排版',
+    link:'',imgs:[],
+    meta:'HTML/CSS/JS · Node.js · Admin Panel',
+    layout:'right',winTitle:'PORTFOLIO_WEB.EXE',
+    style:'dark',tag:'#0a0a0a █ #c9b99a',deco:[]
+  },
+  {
+    id:'builtin_03',title:'新粗野主义UI系统',cat:'交互设计',
+    desc:'粉黑撞色、硬直角、Win98窗口UI组件库、像素glitch交互动效',
+    link:'',imgs:[],
+    meta:'Figma · CSS · Component Library',
+    layout:'right',winTitle:'NEO_BRUTAL_UI.EXE',
+    style:'light',tag:'Y2K · BRUTAL',deco:[]
+  }
+];
+function getBuiltins(){
+  try{return JSON.parse(localStorage.getItem(BUILTIN_KEY))||JSON.parse(JSON.stringify(BUILTIN_DEFAULTS))}catch(e){return JSON.parse(JSON.stringify(BUILTIN_DEFAULTS))}
+}
+function saveBuiltins(w){
+  localStorage.setItem(BUILTIN_KEY,JSON.stringify(w));
+}
+
+// ===== PENDING IMAGES (multi-image upload) =====
+let pendingImgs=[];
+let editingId=null; // null = add mode, string = edit mode
+
+// ===== ADMIN MODAL =====
+function toggleAdmin(){
+  const m=document.getElementById('adminModal');
+  m.classList.toggle('open');
+  if(m.classList.contains('open')){renderManageList();resetForm()}
+  else{resetForm()}
+}
+document.getElementById('adminModal').addEventListener('click',function(e){
+  if(e.target===this)toggleAdmin();
+});
+
+// ===== ADD PENDING IMAGE =====
+function addPendingImg(){
+  const urlVal=document.getElementById('workImgUrl').value.trim();
+  const fileInput=document.getElementById('workImgFile');
+
+  if(urlVal){
+    pendingImgs.push({src:urlVal,type:'url'});
+    document.getElementById('workImgUrl').value='';
+    renderPendingImgs();
+    return;
+  }
+
+  if(fileInput.files&&fileInput.files[0]){
+    const file=fileInput.files[0];
+    const reader=new FileReader();
+    reader.onload=function(e){
+      pendingImgs.push({src:e.target.result,type:'file'});
+      fileInput.value='';
+      renderPendingImgs();
+    };
+    reader.readAsDataURL(file);
+    return;
+  }
+
+  alert('// ERROR: 请输入图片URL或选择本地文件');
+}
+
+function removePendingImg(idx){
+  pendingImgs.splice(idx,1);
+  renderPendingImgs();
+}
+
+function renderPendingImgs(){
+  const el=document.getElementById('pendingImgs');
+  if(pendingImgs.length===0){
+    el.innerHTML='<div class="pending-img-empty">暂无图片 — 点击「+ 添加图片」逐张添加</div>';
+    return;
+  }
+  let html='';
+  pendingImgs.forEach((img,i)=>{
+    html+=`<div class="pending-img-item">
+      <img src="${img.src}" onerror="this.style.background='#ff4466';this.alt='ERROR'">
+      <div class="pi-del" onclick="removePendingImg(${i})">X</div>
+      <div class="pi-idx">#${i+1}</div>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+
+// ===== RESET FORM =====
+function resetForm(){
+  editingId=null;
+  document.getElementById('workTitle').value='';
+  document.getElementById('workDesc').value='';
+  document.getElementById('workCat').value='交互设计';
+  document.getElementById('workLink').value='';
+  document.getElementById('workImgUrl').value='';
+  document.getElementById('workImgFile').value='';
+  pendingImgs=[];
+  renderPendingImgs();
+  updateSubmitBtn();
+  // Clear builtin note
+  const note=document.getElementById('builtinNote');
+  if(note)note.remove();
+}
+
+// ===== EDIT WORK =====
+function editWork(id){
+  const works=getWorks();
+  const w=works.find(w=>w.id===id);
+  if(!w)return;
+  editingId=id;
+  document.getElementById('workTitle').value=w.title;
+  document.getElementById('workDesc').value=w.desc||'';
+  document.getElementById('workCat').value=w.cat;
+  document.getElementById('workLink').value=w.link||'';
+  pendingImgs=(w.imgs||[]).map(src=>({src,type:'url'}));
+  renderPendingImgs();
+  updateSubmitBtn();
+  // scroll to top of form
+  document.querySelector('.admin-body').scrollIntoView({behavior:'smooth'});
+}
+
+function updateSubmitBtn(){
+  const btn=document.querySelector('.form-submit');
+  const cancel=document.getElementById('cancelEditBtn');
+  if(editingId){
+    btn.textContent='✓ 更新作品 UPDATE WORK';
+    if(cancel)cancel.style.display='inline-block';
+  }else{
+    btn.textContent='+ 提交作品 ADD WORK';
+    if(cancel)cancel.style.display='none';
+  }
+}
+
+// ===== ADD / UPDATE WORK =====
+function addWork(){
+  const title=document.getElementById('workTitle').value.trim();
+  const desc=document.getElementById('workDesc').value.trim();
+  const cat=document.getElementById('workCat').value;
+  const link=document.getElementById('workLink').value.trim();
+
+  if(!title){alert('// ERROR: 作品名称不能为空');return}
+
+  const imgSrcs=pendingImgs.map(img=>img.src);
+
+  // Handle built-in edit
+  if(editingId&&editingId.startsWith('b_')){
+    const builtinId=editingId.slice(2);
+    const builtins=getBuiltins();
+    const idx=builtins.findIndex(w=>w.id===builtinId);
+    if(idx===-1){alert('// ERROR: 内置作品不存在');return}
+    builtins[idx].title=title;
+    builtins[idx].desc=desc||'暂无描述';
+    builtins[idx].cat=cat;
+    builtins[idx].link=link||'';
+    builtins[idx].imgs=imgSrcs;
+    saveBuiltins(builtins);
+    resetForm();
+    renderAll();
+    return;
+  }
+
+  // Handle regular work edit/add
+  const works=getWorks();
+
+  if(editingId){
+    // Update existing work
+    const idx=works.findIndex(w=>w.id===editingId);
+    if(idx===-1){alert('// ERROR: 作品不存在');return}
+    works[idx].title=title;
+    works[idx].desc=desc||'暂无描述';
+    works[idx].cat=cat;
+    works[idx].link=link||'';
+    works[idx].imgs=imgSrcs;
+    works[idx].date=new Date().toISOString().slice(0,10);
+  }else{
+    // Add new work
+    if(imgSrcs.length===0){alert('// 提示: 建议至少添加一张图片');}
+    works.push({
+      id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+      title,desc:desc||'暂无描述',cat,link:link||'',
+      imgs:imgSrcs,
+      date:new Date().toISOString().slice(0,10)
+    });
+  }
+
+  saveWorks(works);
+  resetForm();
+  renderAll();
+}
+
+// ===== DELETE WORK =====
+function deleteWork(id){
+  const works=getWorks().filter(w=>w.id!==id);
+  saveWorks(works);
+  renderAll();
+}
+
+// ===== RENDER WORK CARD HTML =====
+function renderWorkCard(w){
+  const imgs=w.imgs||[];
+  const mainImg=imgs.length>0?imgs[0]:'';
+  const hasMulti=imgs.length>1;
+
+  // Main image area
+  let mainImgHtml='';
+  if(mainImg){
+    mainImgHtml=`<div class="work-card-main-img" data-workid="${w.id}" data-imgs='${JSON.stringify(imgs)}' data-idx="0">
+      <img src="${mainImg}" alt="${w.title}" onload="this.style.opacity='1'" onerror="imgError(this)" style="opacity:0;transition:opacity .3s">
+      <div class="glitch-overlay"></div>
+      ${hasMulti?`<div class="img-counter">${imgs.length} IMG</div>
+      <div class="img-nav img-nav-prev" onclick="imgNav(this,-1,event)">&#9664;</div>
+      <div class="img-nav img-nav-next" onclick="imgNav(this,1,event)">&#9654;</div>`:''}
+    </div>`;
+  } else {
+    mainImgHtml=`<div class="work-card-main-img">
+      <span class="no-img">+ 添加作品图片<br><small style="font-size:12px;color:#999;font-weight:400">点击右下角 + 或 ADMIN 按钮上传</small></span>
+      <div class="glitch-overlay"></div>
+    </div>`;
+  }
+
+  // Thumbnail strip
+  let thumbHtml='';
+  if(hasMulti){
+    thumbHtml='<div class="work-card-thumb-strip">';
+    imgs.forEach((img,i)=>{
+      thumbHtml+=`<div class="thumb ${i===0?'active':''}" onclick="imgThumb(this,${i},event)" data-workid="${w.id}">
+        <img src="${img}" onerror="this.parentElement.innerHTML='<span style=font-size:8px;color:#888>ERR</span>'">
+      </div>`;
+    });
+    thumbHtml+='</div>';
+  }
+
+  // Link
+  const linkHtml=w.link
+    ?`<a class="card-link" href="${w.link}" target="_blank">&#8599; 访问链接</a>`
+    :'<span style="font-size:10px;color:#aaa">// 暂无链接</span>';
+
+  return `<div class="work-card reveal">
+    ${mainImgHtml}
+    ${thumbHtml}
+    <div class="work-card-body">
+      <span class="card-cat">${w.cat}</span>
+      <h3>${w.title}</h3>
+      <p>${w.desc}</p>
+      ${linkHtml}
+      <button class="card-del" onclick="deleteWork('${w.id}')">DEL</button>
+    </div>
+  </div>`;
+}
+
+// ===== IMAGE ERROR HANDLER =====
+function imgError(imgEl){
+  // Try to show error state gracefully
+  imgEl.style.display='none';
+  const parent=imgEl.parentElement;
+  if(parent&&!parent.querySelector('.no-img')){
+    const fallback=document.createElement('span');
+    fallback.className='no-img';
+    fallback.textContent='IMG_ERR';
+    fallback.style.cssText='font-weight:900;font-size:28px;color:var(--pink)';
+    parent.insertBefore(fallback,imgEl);
+  }
+}
+
+// ===== IMAGE NAVIGATION =====
+function imgNav(el,dir,ev){
+  ev.stopPropagation();
+  const mainDiv=el.parentElement;
+  const imgs=JSON.parse(mainDiv.dataset.imgs);
+  let idx=parseInt(mainDiv.dataset.idx)+dir;
+  if(idx<0)idx=imgs.length-1;
+  if(idx>=imgs.length)idx=0;
+  mainDiv.dataset.idx=idx;
+  const imgEl=mainDiv.querySelector('img');
+  if(imgEl){
+    imgEl.style.opacity='0';
+    setTimeout(()=>{imgEl.src=imgs[idx];imgEl.style.opacity='1'},150);
+  }
+  // Update thumbnail active state
+  const card=mainDiv.closest('.work-card');
+  if(card){
+    const thumbs=card.querySelectorAll('.work-card-thumb-strip .thumb');
+    thumbs.forEach((t,i)=>{t.classList.toggle('active',i===idx)});
+  }
+}
+
+function imgThumb(el,idx,ev){
+  ev.stopPropagation();
+  const workid=el.dataset.workid;
+  const card=el.closest('.work-card');
+  const mainDiv=card.querySelector('.work-card-main-img');
+  if(mainDiv&&mainDiv.dataset.workid===workid){
+    const imgs=JSON.parse(mainDiv.dataset.imgs);
+    mainDiv.dataset.idx=idx;
+    const imgEl=mainDiv.querySelector('img');
+    if(imgEl){
+      imgEl.style.opacity='0';
+      setTimeout(()=>{imgEl.src=imgs[idx];imgEl.style.opacity='1'},150);
+    }
+    card.querySelectorAll('.work-card-thumb-strip .thumb').forEach((t,i)=>{t.classList.toggle('active',i===idx)});
+  }
+}
+
+// ===== RENDER BUILTIN INTERACTIVE WORKS =====
+function renderBuiltinWorks(){
+  const builtins=getBuiltins();
+  const leftEl=document.getElementById('interBuiltinLeft');
+  const rightEl=document.getElementById('interBuiltinRight');
+  if(!leftEl||!rightEl)return;
+  // merge into one array to keep left/right layout assignment
+  let leftIdx=0, rightIdx=0;
+  let leftHtml='', rightHtml='';
+
+  builtins.forEach((w,i)=>{
+    const imgs=w.imgs||[];
+    const hasImg=imgs.length>0;
+    const isLight=w.style==='light';
+
+    // Screenshot area
+    let ssHtml='';
+    if(hasImg){
+      ssHtml=`<div class="work-screenshot has-img">
+        <img src="${imgs[0]}" alt="${w.title}" onerror="imgError(this)">
+        <div class="img-count-tag">${imgs.length} IMG</div>
+        ${imgs.length>1?`<div class="img-nav-btns">
+          <button class="img-nav-btn" onclick="builtinImgNav(this,-1,event,'${w.id}')">&#9664;</button>
+          <button class="img-nav-btn" onclick="builtinImgNav(this,1,event,'${w.id}')">&#9654;</button>
+        </div>`:''}
+        <button class="edit-hint" onclick="editBuiltin('${w.id}')">&#9998; EDIT</button>
+      </div>`;
+    }else{
+      // fallback to mockup UI
+      ssHtml=renderBuiltinMockup(w)+`<button class="edit-hint" onclick="editBuiltin('${w.id}')">+ 添加横版图片</button>`;
+    }
+
+    const cardHtml=`<div class="work-window win98 reveal" style="margin-bottom:24px">
+      <div class="win98-bar">
+        <span class="t">${w.winTitle||'WORK.EXE'}</span>
+        <div class="win98-dots"><span class="wd wd-r"></span><span class="wd wd-y"></span><span class="wd wd-g"></span></div>
+      </div>
+      <div class="win98-body" style="padding:0">
+        ${ssHtml}
+        <div class="builtin-hero-img${w.heroImage?'':' is-empty'}" onclick="setBuiltinHeroImage('${w.id}')" title="点击上传横版图片">
+          ${w.heroImage?`<img src="${w.heroImage}" alt="${w.title} 横版图" onerror="this.parentElement.classList.add('is-empty');this.remove()"><span class="edit-tip">✎</span><span class="del-tip" onclick="removeBuiltinHeroImage('${w.id}',event)" title="移除图片">×</span>`:''}
+        </div>
+        <div class="work-desc">
+          <h4 style="display:flex;justify-content:space-between;align-items:center">
+            ${w.title}
+            <button style="background:var(--pink);color:var(--black);border:2px solid var(--black);padding:2px 8px;font-weight:900;font-size:9px;cursor:pointer;font-family:inherit" onclick="editBuiltin('${w.id}')">EDIT</button>
+          </h4>
+          <p>${w.desc}</p>
+          <div class="meta">${w.meta||''}${w.link?` · <a href="${w.link}" target="_blank" style="color:var(--pink)">&#8599;LINK</a>`:''}</div>
+        </div>
+      </div>
+    </div>`;
+
+    if(w.layout==='right'){
+      rightHtml+=cardHtml;
+      rightIdx++;
+    } else {
+      leftHtml+=cardHtml;
+      leftIdx++;
+    }
+  });
+
+  // Add decorative elements
+  leftHtml+=`<div class="geo" style="top:16px;left:16px;width:20px;height:20px;background:var(--pink)"></div>
+    <div class="wire" style="top:48px;right:0;width:60px"></div>
+    <div class="sensor-draw">
+      <svg viewBox="0 0 40 40" fill="none" stroke="#888" stroke-width="2"><rect x="4" y="4" width="32" height="32"/><line x1="12" y1="20" x2="28" y2="20"/><line x1="20" y1="12" x2="20" y2="28"/><circle cx="20" cy="20" r="6" stroke="var(--pink)"/></svg>
+      <span>SENSOR_INPUT // 触控传感交互</span>
+    </div>`;
+
+  rightHtml+=`<div class="geo" style="top:16px;right:16px;width:14px;height:14px;background:#00ff88;border-width:3px;transform:rotate(45deg)"></div>
+    <div class="tri" style="bottom:20px;left:20px;transform:rotate(-20deg) scale(.5)"></div>
+    <div class="sensor-draw" style="margin-top:16px">
+      <svg viewBox="0 0 40 40" fill="none" stroke="#888" stroke-width="2"><rect x="8" y="4" width="24" height="32" rx="0"/><line x1="14" y1="28" x2="26" y2="28" stroke="var(--pink)"/><line x1="14" y1="24" x2="26" y2="24"/></svg>
+      <span>MCU_OUTPUT // 单片机可视化界面</span>
+    </div>`;
+
+  leftEl.innerHTML=leftHtml;
+  rightEl.innerHTML=rightHtml;
+
+  // re-observe
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+}
+
+function renderBuiltinMockup(w){
+  const isLight=w.style==='light';
+  let bg=isLight?'background:#fff':'background:linear-gradient(135deg,#1a1a1a,#2a2a2a)';
+  const bdColor=isLight?'border-color:#000':'';
+  let uiHtml='';
+
+  if(w.id==='builtin_01'){
+    uiHtml=`<div class="ui-el" style="top:16px;left:16px;width:60%;height:24px"></div>
+      <div class="ui-el" style="top:50px;left:16px;width:40%;height:40px"></div>
+      <div class="ui-btn" style="top:100px;left:16px">刮 开 此 处</div>
+      <div class="ui-el" style="top:16px;right:16px;width:30%;height:50px"></div>
+      <div class="glitch-strip" style="top:30%;left:0;width:100%"></div>
+      <div class="glitch-strip" style="top:70%;left:0;width:60%;background:#00ff88"></div>
+      <div style="position:absolute;bottom:8px;right:12px;font-size:10px;color:var(--pink);font-weight:900">${w.tag}</div>`;
+  }else if(w.id==='builtin_02'){
+    uiHtml=`<div class="ui-el" style="top:12px;left:12px;right:12px;height:20px;border-color:#c9b99a"></div>
+      <div class="ui-el" style="top:40px;left:12px;width:25%;height:80px;border-color:#c9b99a"></div>
+      <div class="ui-el" style="top:40px;left:40%;width:55%;height:40px;border-color:#c9b99a"></div>
+      <div class="glitch-strip" style="top:55%;left:0;width:80%"></div>
+      <div style="position:absolute;bottom:8px;left:12px;font-size:9px;color:#c9b99a;font-weight:900">${w.tag}</div>`;
+  }else{
+    uiHtml=`<div class="ui-el" style="top:16px;left:16px;right:16px;height:16px;border-color:var(--black);background:rgba(0,0,0,0.05)"></div>
+      <div class="ui-btn" style="top:44px;left:16px">Y2K</div>
+      <div class="ui-btn" style="top:44px;left:80px">BRUTAL</div>
+      <div class="ui-el" style="top:76px;left:16px;width:45%;height:60px;border-color:var(--pink)"></div>
+      <div class="ui-el" style="top:76px;right:16px;width:35%;height:60px;border-color:var(--pink)"></div>
+      <div class="glitch-strip" style="top:80%;left:0;width:50%;background:var(--black)"></div>`;
+  }
+  return `<div class="work-screenshot" style="${bg}">${uiHtml}</div>`;
+}
+
+// ===== BUILTIN IMAGE NAVIGATION =====
+function builtinImgNav(el,dir,ev,builtinId){
+  ev.stopPropagation();
+  const builtins=getBuiltins();
+  const w=builtins.find(b=>b.id===builtinId);
+  if(!w||!w.imgs||w.imgs.length<2)return;
+  const ss=el.closest('.work-screenshot');
+  const img=ss.querySelector('img');
+  const tag=ss.querySelector('.img-count-tag');
+  if(!img||!tag)return;
+  let idx=parseInt(tag.textContent)||0;
+  idx+=dir; if(idx>=w.imgs.length)idx=0; if(idx<0)idx=w.imgs.length-1;
+  img.style.opacity='0';
+  setTimeout(()=>{img.src=w.imgs[idx];img.style.opacity='1'},150);
+  tag.textContent=(idx+1)+'/'+w.imgs.length+' IMG';
+}
+
+// ===== EDIT BUILTIN WORK =====
+function editBuiltin(id){
+  const builtins=getBuiltins();
+  const w=builtins.find(b=>b.id===id);
+  if(!w)return;
+  editingId='b_'+id; // prefix to distinguish builtin
+  document.getElementById('workTitle').value=w.title;
+  document.getElementById('workDesc').value=w.desc||'';
+  document.getElementById('workCat').value=w.cat;
+  document.getElementById('workLink').value=w.link||'';
+  pendingImgs=(w.imgs||[]).map(src=>({src,type:'url'}));
+  renderPendingImgs();
+  updateSubmitBtn();
+  toggleAdmin();
+  // Add extra note in form for builtin
+  const body=document.querySelector('.admin-body');
+  let note=document.getElementById('builtinNote');
+  if(!note){
+    note=document.createElement('div');
+    note.id='builtinNote';
+    note.style.cssText='background:var(--pink);color:var(--black);padding:8px 12px;margin-bottom:12px;font-weight:900;font-size:11px;border:3px solid var(--black)';
+    body.insertBefore(note,body.firstChild);
+  }
+  note.textContent='// 正在编辑内置作品: '+w.title+' (支持修改文字 + 添加/替换横版图片)';
+}
+
+function setBuiltinHeroImage(id){
+  const builtins=getBuiltins();
+  const w=builtins.find(b=>b.id===id);
+  if(!w)return;
+
+  // Create hidden file input if not exists
+  let fileInput=document.getElementById('heroImgFileInput');
+  if(!fileInput){
+    fileInput=document.createElement('input');
+    fileInput.type='file';
+    fileInput.accept='image/*';
+    fileInput.id='heroImgFileInput';
+    fileInput.style.display='none';
+    document.body.appendChild(fileInput);
+  }
+  fileInput.dataset.builtinId=id;
+
+  fileInput.onchange=function(){
+    const file=this.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=function(e){
+      const builtins=getBuiltins();
+      const w=builtins.find(b=>b.id===fileInput.dataset.builtinId);
+      if(w){
+        w.heroImage=e.target.result;
+        saveBuiltins(builtins);
+        renderBuiltinWorks();
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  fileInput.click();
+}
+
+function removeBuiltinHeroImage(id,ev){
+  ev.stopPropagation();
+  const builtins=getBuiltins();
+  const w=builtins.find(b=>b.id===id);
+  if(w){w.heroImage='';saveBuiltins(builtins);renderBuiltinWorks();}
+}
+
+// ===== RENDER ALL =====
+function renderAll(){
+  renderBuiltinWorks();
+  renderSectionWorks('交互设计','interWorksGrid','interDynamicArea');
+  renderSectionWorks('空间设计','spaceWorksGrid','spaceDynamicArea');
+  renderSectionWorks('AIGC','aigcWorksGrid','aigcDynamicArea');
+  renderAllWorks();
+  renderManageList();
+}
+
+function renderSectionWorks(cat,gridId,areaId){
+  const works=getWorks().filter(w=>w.cat===cat);
+  const grid=document.getElementById(gridId);
+  const area=document.getElementById(areaId);
+
+  // ALWAYS show the area — don't hide it
+  area.style.display='block';
+
+  if(works.length===0){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px 20px;border:3px dashed #999;background:#fff">
+      <div style="font-size:36px;color:var(--pink);font-weight:900;margin-bottom:12px">+</div>
+      <p style="font-weight:900;font-size:14px;color:#333;margin-bottom:6px">// 暂无${cat}作品</p>
+      <div style="font-size:11px;color:#888">点击右下角 <span style="color:var(--pink);font-weight:900">+</span> 或导航栏 <span style="color:var(--pink);font-weight:900">ADMIN</span> 添加</div>
+    </div>`;
+    return;
+  }
+
+  let html='';
+  works.forEach(w=>{html+=renderWorkCard(w)});
+  grid.innerHTML=html;
+
+  // re-observe for scroll reveal
+  grid.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+}
+
+function renderAllWorks(){
+  const works=getWorks();
+  const container=document.getElementById('worksContainer');
+
+  if(works.length===0){
+    container.innerHTML=`<div class="empty-state" style="padding:80px 36px">
+      <div class="icon" style="font-size:64px">&#9608;</div>
+      <p>暂无作品 — 点击右下角 + 添加</p>
+      <div class="sub">// 点击 ADMIN 或 + 按钮添加你的第一件作品</div>
+      <div style="margin-top:20px">
+        <a href="javascript:toggleAdmin()" class="btn btn-pk" style="display:inline-block">+ 立即添加作品</a>
+      </div>
+    </div>`;
+    return;
+  }
+
+  let html='<div style="padding:32px 36px"><div class="section-work-grid">';
+  works.forEach(w=>{html+=renderWorkCard(w)});
+  html+='</div></div>';
+  container.innerHTML=html;
+
+  container.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+}
+
+// ===== RENDER MANAGE LIST =====
+function renderManageList(){
+  const works=getWorks();
+  const builtins=getBuiltins();
+  const el=document.getElementById('manageItems');
+  let html='';
+
+  // Built-in section
+  html+='<div style="margin-bottom:8px;font-size:10px;color:var(--pink);font-weight:900;letter-spacing:1px">// 02板块内置作品 (横版图片 · 可编辑)</div>';
+  builtins.forEach(w=>{
+    const imgCount=(w.imgs&&w.imgs.length)||0;
+    html+=`<div class="manage-item" style="border-color:#555">
+      <span class="mi-cat">${w.cat}</span>
+      <span class="mi-title">${w.title}</span>
+      <span class="mi-imgs">${imgCount>0?imgCount+'IMG':'0IMG'}</span>
+      <button class="mi-edit" onclick="editBuiltin('${w.id}')">EDIT</button>
+    </div>`;
+  });
+
+  // Dynamic section
+  if(works.length>0){
+    html+='<div style="margin:12px 0 8px;font-size:10px;color:#888;font-weight:900;letter-spacing:1px">// 动态作品</div>';
+    works.forEach(w=>{
+      const imgCount=(w.imgs&&w.imgs.length)||0;
+      html+=`<div class="manage-item">
+        <span class="mi-cat">${w.cat}</span>
+        <span class="mi-title">${w.title}</span>
+        <span class="mi-imgs">${imgCount>0?imgCount+'IMG':'0IMG'}</span>
+        <button class="mi-edit" onclick="editWork('${w.id}')">EDIT</button>
+        <button class="mi-del" onclick="deleteWork('${w.id}')">DEL</button>
+      </div>`;
+    });
+  }
+
+  if(works.length===0&&builtins.length===0){
+    html='<div style="color:#888;font-size:11px;padding:8px">// 空列表 — 尚未添加作品</div>';
+  }
+  el.innerHTML=html;
+}
+
+// ===== NAV ACTIVE STATE =====
+const sections=document.querySelectorAll('section[id]');
+const navLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{
+  let current='';
+  sections.forEach(s=>{
+    const top=s.offsetTop-80;
+    if(window.scrollY>=top) current=s.getAttribute('id');
+  });
+  navLinks.forEach(a=>{
+    a.classList.remove('active');
+    if(a.getAttribute('href')==='#'+current) a.classList.add('active');
+  });
+});
+
+// ===== SCROLL REVEAL =====
+const reveals=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target)}
+  });
+},{threshold:0.15});
+reveals.forEach(el=>observer.observe(el));
+
+// ===== INIT =====
+renderAll();
+</script>
+</body>
+</html>
